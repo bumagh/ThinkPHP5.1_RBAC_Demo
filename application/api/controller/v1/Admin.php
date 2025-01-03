@@ -20,13 +20,8 @@ class Admin extends Base
         $page = $request->param('page') ? $request->param('page') : 1;
         $aid = $this->aid;
         $db = new AdminModel();
-        $filed = 'id,username,create_time';
-        $list = $db->limit($limit)->page($page)->field($filed)->select();
-        if ($list) {
-            $count = $db->count('id');
-            return json(['code' => 0, 'msg' => '获取成功', 'data' => $list, 'count' => $count]);
-        } else
-            return json(['code' => 0, 'msg' => '没数据']);
+        $field = 'id,username,create_time';
+        return json($db->_lists($limit, $page, $field));
     }
 
     /**

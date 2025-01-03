@@ -34,4 +34,13 @@ class BaseModel extends Model
         else
             return ['code' => 1, 'msg' => '操作失败'];
     }
+    public function _lists($limit, $page, $field)
+    {
+        $list = $this->limit($limit)->page($page)->field($field)->select();
+        if ($list) {
+            $count = $this->count('id');
+            return ['code' => 0, 'msg' => '获取成功', 'data' => $list, 'count' => $count];
+        } else
+            return ['code' => 0, 'msg' => '没数据'];
+    }
 }
