@@ -26,4 +26,12 @@ class BaseModel extends Model
         } else
             return ['code' => 1, 'msg' => '操作失败'];
     }
+    public function _del($data)
+    {
+        $res = $this->where('id', $data)->delete();
+        if ($res)
+            return ['code' => 0, 'msg' => '操作成功'];
+        else
+            return ['code' => 1, 'msg' => '操作失败'];
+    }
 }

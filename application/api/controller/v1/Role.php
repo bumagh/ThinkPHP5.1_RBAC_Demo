@@ -94,10 +94,6 @@ class Role extends Base
     {
         $id = $request->param('id');
         $db = new RoleModel();
-        $res = $db->where('id', $id)->delete();
-        if ($res)
-            return json(['code' => 0, 'msg' => '操作成功']);
-        else
-            return json(['code' => 1, 'msg' => '操作失败']);
+        return json($db->_del($id));
     }
 }
