@@ -4,6 +4,7 @@ namespace app\api\controller\v1;
 
 use app\api\controller\Base;
 use app\common\model\RuleModel;
+use app\common\model\RoleRuleModel;
 use think\Controller;
 use think\Request;
 
@@ -41,6 +42,24 @@ class RoleRule extends Base
     public function save(Request $request)
     {
         //
+        $data = $request->param();
+        $role_id = $request->param('role_id');
+        $rule_ids =  $request->param('rule_ids');
+        $db = new RoleRuleModel();
+        $info = $db->where('role_id', $role_id)->find();
+        if ($info) {
+            //edit
+            $res = $db->where('id', $info['id'])->setField('rule_ids', $rule_ids);
+        } else {
+            //add
+            $data['role_id'] = $role_id;
+            $data['rule_ids'] = $rule_ids;
+            $res = $db->save($data);
+        }
+        if ($res) {
+            return json(['code' => 0, 'msg' => '操作成功']);
+        } else
+            return json(['code' => 1, 'msg' => '操作失败']);
     }
 
     /**
@@ -49,9 +68,29 @@ class RoleRule extends Base
      * @param  int  $id
      * @return \think\Response
      */
-    public function read($id)
+    public function read(Request $request)
     {
-        //
+        // $admin_id = $request->param('admin_id');
+        // $db = new RoleRuleModel();
+        // $info = $db->where('admin_id', $admin_id)->find();
+        // $db = new RoleModel();
+        // $list = $db->where('status', 1)->field('id,name')->select()->toArray();
+        // if ($info) {
+        //     $tmp = explode(',', $info['role_ids']);
+        //     foreach ($list as $k => $v) {
+        //         # code...
+        //         if (in_array($v['id'], $tmp)) {
+        //             $list[$k]['check'] = true;
+        //         } else
+        //             $list[$k]['check'] = false;
+        //     }
+        // } else {
+        //     foreach ($list as $key => $value) {
+        //         # code...
+        //         $list[$key]['check'] = false;
+        //     }
+        // }
+        // return json(['code' => 0, 'data' => $list]);
     }
 
     /**
