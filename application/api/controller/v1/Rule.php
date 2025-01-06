@@ -20,7 +20,7 @@ class Rule extends Base
         $limit = $request->param('limit') ? $request->param('limit') : 10;
         $page = $request->param('page') ? $request->param('page') : 1;
         $db = new RuleModel();
-        $field = 'id,name,create_time';
+        $field = 'id,name,create_time,img,url,status';
         return json($db->_lists($limit, $page, $field));
     }
 

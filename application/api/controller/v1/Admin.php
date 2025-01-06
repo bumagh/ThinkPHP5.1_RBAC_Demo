@@ -20,7 +20,7 @@ class Admin extends Base
         $page = $request->param('page') ? $request->param('page') : 1;
         $aid = $this->aid;
         $db = new AdminModel();
-        $field = 'id,username,create_time';
+        $field = 'id,username,status,create_time';
         return json($db->_lists($limit, $page, $field));
     }
 
