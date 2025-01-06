@@ -51,7 +51,7 @@ class AdminRole extends Base
         $info = $db->where('admin_id', $admin_id)->find();
         if ($info) {
             //edit
-            $res = $db->where('id', $info['id'])->setField('role_ids', $role_ids);
+            $res = $db->where('admin_id', $admin_id)->setField('role_ids', $role_ids);
         } else {
             //add
             $data['admin_id'] = $admin_id;
@@ -94,7 +94,20 @@ class AdminRole extends Base
         }
         return json(['code' => 0, 'data' => $list]);
     }
-
+    public function adminroleids(Request $request)
+    {
+        $admin_id = $request->param('admin_id');
+        $db = new AdminRoleModel();
+        $info = $db->where('admin_id', $admin_id)->value('role_ids');
+        if ($info) {
+            $role_ids = explode(',', $info);
+            foreach ($role_ids as $key => $value) {
+                $role_ids[$key] = intval($value);
+            }
+            return json(['code' => 0, 'msg' => '获取admin下的roleids成功', 'data' => $role_ids]);
+        } else
+            return json(['code' => 1, 'msg' => '获取admin下的roleids为空', 'data' => '']);
+    }
     /**
      * 显示编辑资源表单页.
      *

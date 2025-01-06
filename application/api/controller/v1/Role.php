@@ -27,6 +27,13 @@ class Role extends Base
             return json(['code' => 0, 'msg' => '没数据']);
     }
 
+    public function lists(Request $request)
+    {
+        $db = new RoleModel();
+        $fields = 'id,name';
+        $list = $db->field($fields)->select();
+        return json(['code' => 0, 'msg' => '获取成功', 'data' => $list]);
+    }
     /**
      * 显示创建资源表单页.
      *
