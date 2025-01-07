@@ -30,7 +30,18 @@ class RoleRule extends Base
         $list = $db->where('status', 1)->field('id,name,pid,url,img')->select()->toArray();
         return json(['code' => 0, 'msg' => '获取规则信息成功', 'data' => Tools::List2Tree($list)]);
     }
-    
+    public function getUrlRoleId(Request $request)
+    {
+        $role_id = $request->param('role_id');
+        $db = new RoleRuleModel();
+        $rule_ids = $db->where('role_id', $role_id)->value('rule_ids');
+        $rule_ids = explode(',', $rule_ids);
+        foreach ($rule_ids as $key => $value) {
+            $rule_ids[$key] = intval($value);
+        }
+        return json(['code' => 0, 'msg' => '获取规则信息成功', 'data' => $rule_ids]);
+    }
+
     /**
      * 显示创建资源表单页.
      *
@@ -57,13 +68,14 @@ class RoleRule extends Base
         $info = $db->where('role_id', $role_id)->find();
         if ($info) {
             //edit
-            $res = $db->where('id', $info['id'])->setField('rule_ids', $rule_ids);
+            $res = $db->where('role_id', $role_id)->setField('rule_ids', $rule_ids);
         } else {
             //add
             $data['role_id'] = $role_id;
             $data['rule_ids'] = $rule_ids;
             $res = $db->save($data);
         }
+        
         if ($res) {
             return json(['code' => 0, 'msg' => '操作成功']);
         } else
