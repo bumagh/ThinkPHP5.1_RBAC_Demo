@@ -3,6 +3,7 @@
 namespace app\api\controller\v1;
 
 use app\api\controller\Base;
+use app\api\controller\Tools;
 use app\common\model\RuleModel;
 use app\common\model\RoleRuleModel;
 use think\Controller;
@@ -19,10 +20,17 @@ class RoleRule extends Base
     {
         //
         $db = new RuleModel();
-        $list = $db->where('status',1)->field('id,name,pid,url,img')->select();
-        return json(['code'=>0, 'msg'=>'获取规则信息成功', 'data'=>$list]);
+        $list = $db->where('status', 1)->field('id,name,pid,url,img')->select();
+        return json(['code' => 0, 'msg' => '获取规则信息成功', 'data' => $list]);
     }
-
+    public function getTree(Request $request)
+    {
+        //
+        $db = new RuleModel();
+        $list = $db->where('status', 1)->field('id,name,pid,url,img')->select()->toArray();
+        return json(['code' => 0, 'msg' => '获取规则信息成功', 'data' => Tools::List2Tree($list)]);
+    }
+    
     /**
      * 显示创建资源表单页.
      *
